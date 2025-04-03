@@ -1,5 +1,5 @@
-from graph_map import GraphMap
-from dijkstra import compute_distance_matrix
+from algo.graph_map import GraphMap
+from algo.dijkstra import compute_distance_matrix
 import matplotlib.pyplot as plt
 import networkx as nx
 
