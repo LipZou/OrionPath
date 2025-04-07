@@ -1,4 +1,4 @@
-from algo.graph_map import GraphMap
+from graph_map import GraphMap
 import networkx as nx
 import matplotlib.pyplot as plt
 
