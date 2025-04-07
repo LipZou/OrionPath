@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 '''
-test case: run python algo/test_graphMap.py in pycharm terminal
+test case: run python backend/test_graphMap.py in pycharm terminal
 '''
 def test_graph_visual():
     width, height = 6, 6
