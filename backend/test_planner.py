@@ -5,17 +5,16 @@ from planner import find_best_valid_path
 
 def test_dfs_path_planning():
     # ✅ 1. 构建地图
-    gmap = GraphMap(6, 6)
+    gmap = GraphMap(10, 10)
 
     # ✅ 2. 添加障碍（可选）
-    gmap.set_block_edge((2, 2), (3, 3))
-    gmap.set_block_edge((1, 1), (1, 2))
+    # gmap.set_block_edge((2, 2), (3, 3))
+    # gmap.set_block_edge((1, 1), (1, 2))
 
     # ✅ 3. 设置送货目标（位置 + 时间窗）
     deliveries = [
-        Delivery((3, 4), ("08:30", "09:00")),
-        Delivery((5, 5), ("09:15", "10:00")),
-        Delivery((1, 2), ("08:45", "09:20")),
+        Delivery((5, 2), ("08:30", "09:30")),
+        Delivery((9, 9), ("08:30", "09:30"))
     ]
 
     start = (0, 0)

@@ -28,7 +28,7 @@ class Delivery:
         """
         把分钟偏移量转换为 24 小时格式字符串
         """
-        total = self.base_hour * 60 + self.base_minute + minutes
+        total = self.base_hour * 60 + self.base_minute + int(minutes)
         h, m = divmod(total, 60)
         return f"{h:02d}:{m:02d}"
 
