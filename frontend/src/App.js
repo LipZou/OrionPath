@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import GraphView from "./components/GraphView";
 import DeliveryForm from "./components/DeliveryForm";
 import EdgeEditForm from "./components/EdgeEditForm";
+import DeliveryTimeModal from "./components/DeliveryTimeModal";
 import axios from "axios";
 import SidePanel from "./components/SidePanel";
 
@@ -14,6 +15,7 @@ const App = () => {
   const [selectedEdge, setSelectedEdge] = useState(null);
   const [pathResult, setPathResult] = useState(null);
   const [deliveryOrder, setDeliveryOrder] = useState([]);
+  const [showDeliveryTimeModal, setShowDeliveryTimeModal] = useState(false);
   const start = [0, 0];
 
   // 🚀 加载地图节点、边、送货点
@@ -120,11 +122,9 @@ const App = () => {
         ...baseResult,
         full_path: realPath,
       });
-      const deliveryOrder = baseResult.sequence.map((coord, index) => ({
-        x: coord[0],
-        y: coord[1],
-        order: index + 1,
-      }));
+      
+      // Show the delivery time modal
+      setShowDeliveryTimeModal(true);
 
     } catch (err) {
       console.error("路径规划失败：", err);
@@ -219,6 +219,13 @@ const App = () => {
           edge={selectedEdge}
           onSubmit={handleEdgeSubmit}
           onCancel={() => setSelectedEdge(null)}
+        />
+      )}
+
+      {showDeliveryTimeModal && (
+        <DeliveryTimeModal
+          pathResult={pathResult}
+          onClose={() => setShowDeliveryTimeModal(false)}
         />
       )}
     </div>
