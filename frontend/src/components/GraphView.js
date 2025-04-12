@@ -6,6 +6,7 @@ const GraphView = ({
   deliveries = [],
   start = [0, 0],
   pathResult = null,
+  deliveryOrder = [],
   onNodeClick = () => {},
   onEdgeClick = () => {},
   cellSize = 50
@@ -104,6 +105,7 @@ const GraphView = ({
           );
         })}
 
+
       {/* 所有节点 */}
       {nodes.map((node, idx) => {
         const [x, y] = scale(node);
@@ -149,6 +151,25 @@ const GraphView = ({
             </text>
           );
         })}
+
+      {/* delivery order */}
+      {deliveryOrder && deliveryOrder.map(({ x, y, order }) => {
+        const [scaledX, scaledY] = scale([x, y]);
+        return (
+          <text
+            key={`label-${x}-${y}`}
+            x={scaledX}
+            y={scaledY + 5}
+            textAnchor="middle"
+            fontSize="12"
+            fill="red"
+            fontWeight="bold"
+          >
+            {order}
+          </text>
+        );
+      })}
+
     </svg>
   );
 };

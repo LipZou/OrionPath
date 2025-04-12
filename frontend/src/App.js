@@ -13,6 +13,7 @@ const App = () => {
   const [selectedNode, setSelectedNode] = useState(null);
   const [selectedEdge, setSelectedEdge] = useState(null);
   const [pathResult, setPathResult] = useState(null);
+  const [deliveryOrder, setDeliveryOrder] = useState([]);
   const start = [0, 0];
 
   // 🚀 加载地图节点、边、送货点
@@ -95,6 +96,12 @@ const App = () => {
     try {
       const res = await axios.post("http://localhost:8000/compute-plan");
       const baseResult = res.data;
+      const deliverySequence = baseResult.sequence.map((coord, index) => ({
+        x: coord[0],
+        y: coord[1],
+        order: index + 1,
+      }));
+      setDeliveryOrder(deliverySequence);
 
       if (!baseResult || baseResult.status !== "success") {
         alert("❌ 后端未找到可行路径！");
@@ -113,6 +120,12 @@ const App = () => {
         ...baseResult,
         full_path: realPath,
       });
+      const deliveryOrder = baseResult.sequence.map((coord, index) => ({
+        x: coord[0],
+        y: coord[1],
+        order: index + 1,
+      }));
+
     } catch (err) {
       console.error("路径规划失败：", err);
       alert("路径规划失败！");
@@ -164,6 +177,7 @@ const App = () => {
         deliveries={deliveries}
         start={start}
         pathResult={pathResult}
+        deliveryOrder={deliveryOrder}
         onNodeClick={(node) => {
           setSelectedNode(node);
           setShowForm(true);
