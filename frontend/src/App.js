@@ -173,7 +173,10 @@ const App = () => {
   return (
     <div className="app-container">
       <header className="app-header">
-        <h1 className="app-title">🚚 Intelligent Delivery Map System</h1>
+        <h1 className="app-title">
+          <span className="app-title-emoji">🚚</span>
+          Intelligent Delivery Map System
+        </h1>
       </header>
 
       <main className="app-content">
