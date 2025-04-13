@@ -171,7 +171,7 @@ const App = () => {
 
   return (
     <div style={{ padding: 20 }}>
-      <h2>🚚 智能配送地图系统</h2>
+      <h2>🚚 Intelligent Delivery Map System</h2>
 
       <GraphView
         nodes={nodes}
