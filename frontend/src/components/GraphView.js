@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 const GraphView = ({
   nodes = [],
@@ -12,6 +12,8 @@ const GraphView = ({
   cellSize = 50
 }) => {
   const NODE_RADIUS = 10;
+  const svgRef = useRef(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   const scale = (coord) => {
     const [x, y] = coord;
@@ -23,8 +25,8 @@ const GraphView = ({
 
   const maxX = Math.max(...nodes.map(n => n[0]), 0);
   const maxY = Math.max(...nodes.map(n => n[1]), 0);
-  const svgWidth = (maxX + 2) * cellSize;
-  const svgHeight = (maxY + 2) * cellSize;
+  const contentWidth = (maxX + 2) * cellSize;
+  const contentHeight = (maxY + 2) * cellSize;
 
   // 偏移箭头线段，防止正反向箭头重叠
   const getOffset = (dx, dy, offset = 5) => {
@@ -39,138 +41,163 @@ const GraphView = ({
     }
   }, [pathResult]);
 
+  // Update dimensions on resize
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (svgRef.current) {
+        const { width, height } = svgRef.current.parentElement.getBoundingClientRect();
+        setDimensions({ width, height });
+      }
+    };
+    
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    
+    return () => {
+      window.removeEventListener('resize', updateDimensions);
+    };
+  }, []);
+
+  // Calculate the viewBox for responsive scaling
+  const viewBox = `0 0 ${contentWidth} ${contentHeight}`;
+
   return (
-    <svg width={svgWidth} height={svgHeight} style={{ background: "#f9f9f9", border: "1px solid #ccc" }}>
-      {/* 箭头标记 */}
-      <defs>
-        <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-          <path d="M0,0 L6,3 L0,6 Z" fill="#999" />
-        </marker>
-        <marker id="arrow-blocked" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-          <path d="M0,0 L6,3 L0,6 Z" fill="black" />
-        </marker>
-      </defs>
+    <div style={{ width: '100%', height: '100%', position: 'relative', overflow: 'auto' }}>
+      <svg 
+        ref={svgRef}
+        width="100%" 
+        height="100%" 
+        viewBox={viewBox}
+        preserveAspectRatio="xMidYMid meet"
+        style={{ background: "#f9f9f9", border: "1px solid #ccc" }}
+      >
+        {/* 箭头标记 */}
+        <defs>
+          <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#999" />
+          </marker>
+          <marker id="arrow-blocked" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="black" />
+          </marker>
+        </defs>
 
-      {/* 所有边（箭头表示方向） */}
-      {edges.map((edge, idx) => {
-        const [sx, sy] = scale(edge.from);
-        const [ex, ey] = scale(edge.to);
-        const dx = ex - sx;
-        const dy = ey - sy;
+        {/* 所有边（箭头表示方向） */}
+        {edges.map((edge, idx) => {
+          const [sx, sy] = scale(edge.from);
+          const [ex, ey] = scale(edge.to);
+          const dx = ex - sx;
+          const dy = ey - sy;
 
-        const [ox, oy] = getOffset(dx, dy, 6); // 用于偏移箭头
+          const [ox, oy] = getOffset(dx, dy, 6); // 用于偏移箭头
 
-        const color = edge.blocked ? "black" : "#999";
-        const dash = edge.blocked ? "5,5" : "";
-        const marker = edge.blocked ? "url(#arrow-blocked)" : "url(#arrow)";
-
-        return (
-          <line
-            key={`edge-${idx}`}
-            x1={sx + ox}
-            y1={sy + oy}
-            x2={ex + ox}
-            y2={ey + oy}
-            stroke={color}
-            strokeWidth={2}
-            strokeDasharray={dash}
-            markerEnd={marker}
-            onClick={() => onEdgeClick(edge)}
-            style={{ cursor: "pointer" }}
-          />
-        );
-      })}
-
-      {/* 红色路径：full_path */}
-      {pathResult?.full_path?.length > 1 &&
-        pathResult.full_path.map((point, idx) => {
-          if (idx === pathResult.full_path.length - 1) return null;
-
-          const [x1, y1] = scale(point);
-          const [x2, y2] = scale(pathResult.full_path[idx + 1]);
-
-          // 🧠 打印每一段路径段
-          console.log(`🔥 路径段 ${idx}: (${point}) → (${pathResult.full_path[idx + 1]})`);
+          const color = edge.blocked ? "black" : "#999";
+          const dash = edge.blocked ? "5,5" : "";
+          const marker = edge.blocked ? "url(#arrow-blocked)" : "url(#arrow)";
 
           return (
             <line
-              key={`realpath-${idx}`}
-              x1={x1}
-              y1={y1}
-              x2={x2}
-              y2={y2}
-              stroke="red"
-              strokeWidth={3}
+              key={`edge-${idx}`}
+              x1={sx + ox}
+              y1={sy + oy}
+              x2={ex + ox}
+              y2={ey + oy}
+              stroke={color}
+              strokeWidth={2}
+              strokeDasharray={dash}
+              markerEnd={marker}
+              onClick={() => onEdgeClick(edge)}
+              style={{ cursor: "pointer" }}
             />
           );
         })}
 
+        {/* 红色路径：full_path */}
+        {pathResult?.full_path?.length > 1 &&
+          pathResult.full_path.map((point, idx) => {
+            if (idx === pathResult.full_path.length - 1) return null;
 
-      {/* 所有节点 */}
-      {nodes.map((node, idx) => {
-        const [x, y] = scale(node);
-        const [nx, ny] = node;
+            const [x1, y1] = scale(point);
+            const [x2, y2] = scale(pathResult.full_path[idx + 1]);
 
-        let color = "#ddd";
-        if (isStart(nx, ny)) color = "green";
-        else if (isDelivery(nx, ny)) color = "orange";
+            return (
+              <line
+                key={`realpath-${idx}`}
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke="red"
+                strokeWidth={3}
+              />
+            );
+          })}
 
-        return (
-          <g key={`node-${idx}`} onClick={() => onNodeClick(node)} style={{ cursor: "pointer" }}>
-            <circle cx={x} cy={y} r={NODE_RADIUS} fill={color} stroke="black" />
-            <text x={x} y={y - 15} fontSize={12} textAnchor="middle" fill="black">
-              ({nx}, {ny})
-            </text>
-          </g>
-        );
-      })}
 
-      {/* 到达时间（蓝色） */}
-      {pathResult &&
-        [start, ...pathResult.sequence].map((point, idx) => {
-          const [x, y] = scale(point);
-          const arrival = idx === 0 ? 0 : pathResult.arrival_times?.[idx - 1];
-          if (arrival == null || isNaN(arrival)) return null;
+        {/* 所有节点 */}
+        {nodes.map((node, idx) => {
+          const [x, y] = scale(node);
+          const [nx, ny] = node;
 
-          const baseMinutes = 480;
-          const total = baseMinutes + arrival;
-          const hours = Math.floor(total / 60);
-          const mins = total % 60;
-          const timeStr = `${hours.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}`;
+          let color = "#ddd";
+          if (isStart(nx, ny)) color = "green";
+          else if (isDelivery(nx, ny)) color = "orange";
 
           return (
-            <text
-              key={`time-${idx}`}
-              x={x}
-              y={y - 25}
-              fontSize={10}
-              textAnchor="middle"
-              fill="blue"
-            >
-              {timeStr}
-            </text>
+            <g key={`node-${idx}`} onClick={() => onNodeClick(node)} style={{ cursor: "pointer" }}>
+              <circle cx={x} cy={y} r={NODE_RADIUS} fill={color} stroke="black" />
+              <text x={x} y={y - 15} fontSize={12} textAnchor="middle" fill="black">
+                ({nx}, {ny})
+              </text>
+            </g>
           );
         })}
 
-      {/* delivery order */}
-      {deliveryOrder && deliveryOrder.map(({ x, y, order }) => {
-        const [scaledX, scaledY] = scale([x, y]);
-        return (
-          <text
-            key={`label-${x}-${y}`}
-            x={scaledX}
-            y={scaledY + 5}
-            textAnchor="middle"
-            fontSize="12"
-            fill="red"
-            fontWeight="bold"
-          >
-            {order}
-          </text>
-        );
-      })}
+        {/* 到达时间（蓝色） */}
+        {pathResult &&
+          [start, ...pathResult.sequence].map((point, idx) => {
+            const [x, y] = scale(point);
+            const arrival = idx === 0 ? 0 : pathResult.arrival_times?.[idx - 1];
+            if (arrival == null || isNaN(arrival)) return null;
 
-    </svg>
+            const baseMinutes = 480;
+            const total = baseMinutes + arrival;
+            const hours = Math.floor(total / 60);
+            const mins = total % 60;
+            const timeStr = `${hours.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}`;
+
+            return (
+              <text
+                key={`time-${idx}`}
+                x={x}
+                y={y - 25}
+                fontSize={10}
+                textAnchor="middle"
+                fill="blue"
+              >
+                {timeStr}
+              </text>
+            );
+          })}
+
+        {/* delivery order */}
+        {deliveryOrder && deliveryOrder.map(({ x, y, order }) => {
+          const [scaledX, scaledY] = scale([x, y]);
+          return (
+            <text
+              key={`label-${x}-${y}`}
+              x={scaledX}
+              y={scaledY + 5}
+              textAnchor="middle"
+              fontSize="12"
+              fill="red"
+              fontWeight="bold"
+            >
+              {order}
+            </text>
+          );
+        })}
+      </svg>
+    </div>
   );
 };
 

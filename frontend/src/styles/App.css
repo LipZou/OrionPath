@@ -1,0 +1,80 @@
+/* App container */
+.app-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header */
+.app-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.app-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main content */
+.app-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+}
+
+/* Graph container */
+.graph-container {
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fafafa;
+  margin-bottom: 16px;
+  width: 100%;
+  height: calc(100vh - 180px);
+  min-height: 500px;
+  box-sizing: border-box;
+}
+
+/* Panel container */
+.panel-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Media queries for different screen sizes */
+@media (max-width: 768px) {
+  .app-title {
+    font-size: 24px;
+  }
+  
+  .graph-container {
+    height: calc(100vh - 160px);
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 12px;
+  }
+  
+  .app-title {
+    font-size: 20px;
+  }
+  
+  .graph-container {
+    height: calc(100vh - 140px);
+    min-height: 350px;
+  }
+} 

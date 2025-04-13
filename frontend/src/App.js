@@ -5,6 +5,7 @@ import EdgeEditForm from "./components/EdgeEditForm";
 import DeliveryTimeModal from "./components/DeliveryTimeModal";
 import axios from "axios";
 import SidePanel from "./components/SidePanel";
+import "./styles/App.css";
 
 const App = () => {
   const [nodes, setNodes] = useState([]);
@@ -170,58 +171,52 @@ const App = () => {
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      <h2>🚚 Intelligent Delivery Map System</h2>
+    <div className="app-container">
+      <header className="app-header">
+        <h1 className="app-title">🚚 Intelligent Delivery Map System</h1>
+      </header>
 
-      <GraphView
-        nodes={nodes}
-        edges={edges}
-        deliveries={deliveries}
-        start={start}
-        pathResult={pathResult}
-        deliveryOrder={deliveryOrder}
-        onNodeClick={(node) => {
-          if (mode === 'delivery') {
-            setSelectedNode(node);
-            setShowForm(true);
-          }
-        }}
-        onEdgeClick={(edge) => {
-          if (mode === 'edge') {
-            setSelectedEdge(edge);
-          }
-        }}
-      />
+      <main className="app-content">
+        <div className="graph-container">
+          <GraphView
+            nodes={nodes}
+            edges={edges}
+            deliveries={deliveries}
+            start={start}
+            pathResult={pathResult}
+            deliveryOrder={deliveryOrder}
+            onNodeClick={(node) => {
+              if (mode === 'delivery') {
+                setSelectedNode(node);
+                setShowForm(true);
+              }
+            }}
+            onEdgeClick={(edge) => {
+              if (mode === 'edge') {
+                setSelectedEdge(edge);
+              }
+            }}
+          />
+        </div>
 
-      <SidePanel
-        mode={mode}
-        setMode={setMode}
-        onComputePlan={handleComputePlan}
-        onClearAll={handleClearDeliveries}
-      />
+        <div className="panel-container">
+          <SidePanel
+            mode={mode}
+            setMode={setMode}
+            onComputePlan={handleComputePlan}
+            onClearAll={handleClearDeliveries}
+          />
+        </div>
+      </main>
 
       {showForm && selectedNode && (
-        <>
-          <div
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: "rgba(0, 0, 0, 0.3)",
-              zIndex: 1000,
-            }}
-            onClick={() => setShowForm(false)}
-          />
-          <DeliveryForm
-            x={selectedNode[0]}
-            y={selectedNode[1]}
-            onSubmit={handleAddDelivery}
-            onDelete={handleDeleteDelivery}
-            onCancel={() => setShowForm(false)}
-          />
-        </>
+        <DeliveryForm
+          x={selectedNode[0]}
+          y={selectedNode[1]}
+          onSubmit={handleAddDelivery}
+          onDelete={handleDeleteDelivery}
+          onCancel={() => setShowForm(false)}
+        />
       )}
 
       {selectedEdge && (
