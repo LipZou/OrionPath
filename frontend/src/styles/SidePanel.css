@@ -1,23 +1,27 @@
 .side-panel {
-  position: static;
   display: flex;
-  gap: 8px;
-  margin-top: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  padding: 12px 0;
 }
 
 .mode-buttons,
 .action-buttons {
   display: flex;
-  gap: 8px;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 /* Common button styles */
 .mode-button,
 .plan-button,
 .clear-button {
-  padding: 8px 16px;
+  padding: 10px 18px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
   display: flex;
@@ -26,6 +30,8 @@
   background: #f0f0f0;
   color: #666;
   transition: all 0.2s ease;
+  min-width: 100px;
+  justify-content: center;
 }
 
 /* Hover states */
@@ -33,6 +39,7 @@
 .plan-button:hover,
 .clear-button:hover {
   background: #e8e8e8;
+  transform: translateY(-1px);
 }
 
 /* Active states */
@@ -40,6 +47,7 @@
 .plan-button.active {
   background: #1890ff;
   color: white;
+  box-shadow: 0 2px 6px rgba(24, 144, 255, 0.2);
 }
 
 .mode-button.active:hover,
@@ -53,4 +61,21 @@
 .clear-button span {
   display: inline-flex;
   align-items: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .side-panel {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .mode-button,
+  .plan-button,
+  .clear-button {
+    padding: 8px 12px;
+    font-size: 13px;
+    min-width: 90px;
+  }
 } 

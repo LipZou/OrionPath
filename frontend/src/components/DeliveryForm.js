@@ -1,5 +1,6 @@
 // DeliveryForm.jsx
 import React, { useState } from "react";
+import "../styles/DeliveryForm.css";
 
 const DeliveryForm = ({ x, y, onSubmit, onDelete, onCancel }) => {
   const [earliest, setEarliest] = useState("08:30");
@@ -17,31 +18,37 @@ const DeliveryForm = ({ x, y, onSubmit, onDelete, onCancel }) => {
   };
 
   return (
-    <div style={{
-      position: "fixed",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      background: "white",
-      border: "2px solid #ccc",
-      borderRadius: 8,
-      padding: 20,
-      zIndex: 1001,
-      boxShadow: "0 4px 8px rgba(0,0,0,0.2)"
-    }}>
-      <h3>📦 添加 / 编辑送货点 ({x}, {y})</h3>
-      <div>
-        最早到达: <input value={earliest} onChange={e => setEarliest(e.target.value)} />
+    <>
+      <div className="add-node-modal-backdrop"></div>
+      <div className="add-node-modal">
+        <div className="add-node-header">
+          <h3 className="add-node-title">📦 添加 / 编辑送货节点 <span className="location-display">({x}, {y})</span></h3>
+        </div>
+        <div className="add-node-form">
+          <div className="time-input-group">
+            <div className="time-input-label">最早到达:</div>
+            <input 
+              className="time-input" 
+              value={earliest} 
+              onChange={e => setEarliest(e.target.value)} 
+            />
+          </div>
+          <div className="time-input-group">
+            <div className="time-input-label">最晚到达:</div>
+            <input 
+              className="time-input" 
+              value={latest} 
+              onChange={e => setLatest(e.target.value)} 
+            />
+          </div>
+          <div className="button-group">
+            <button className="confirm-button" onClick={handleSubmit}>确定</button>
+            <button className="cancel-button" onClick={onCancel}>取消</button>
+            <button className="delete-button" onClick={handleDelete}>删除</button>
+          </div>
+        </div>
       </div>
-      <div>
-        最晚到达: <input value={latest} onChange={e => setLatest(e.target.value)} />
-      </div>
-      <div style={{ marginTop: 10 }}>
-        <button onClick={handleSubmit}>确定</button>
-        <button onClick={onCancel} style={{ marginLeft: 10 }}>取消</button>
-        <button onClick={handleDelete} style={{ marginLeft: 10, color: "red" }}>删除</button>
-      </div>
-    </div>
+    </>
   );
 };
 
