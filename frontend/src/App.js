@@ -16,6 +16,7 @@ const App = () => {
   const [pathResult, setPathResult] = useState(null);
   const [deliveryOrder, setDeliveryOrder] = useState([]);
   const [showDeliveryTimeModal, setShowDeliveryTimeModal] = useState(false);
+  const [mode, setMode] = useState('delivery'); // 'delivery' or 'edge'
   const start = [0, 0];
 
   // 🚀 加载地图节点、边、送货点
@@ -86,6 +87,7 @@ const App = () => {
       await axios.post("http://localhost:8000/clear-deliveries");
       alert("已清空所有送货点");
       setPathResult(null); // 清除路径
+      setDeliveryOrder([]); // 清除送货顺序
       loadMap();
     } catch (err) {
       console.error(err);
@@ -179,13 +181,21 @@ const App = () => {
         pathResult={pathResult}
         deliveryOrder={deliveryOrder}
         onNodeClick={(node) => {
-          setSelectedNode(node);
-          setShowForm(true);
+          if (mode === 'delivery') {
+            setSelectedNode(node);
+            setShowForm(true);
+          }
         }}
-        onEdgeClick={(edge) => setSelectedEdge(edge)}
+        onEdgeClick={(edge) => {
+          if (mode === 'edge') {
+            setSelectedEdge(edge);
+          }
+        }}
       />
 
       <SidePanel
+        mode={mode}
+        setMode={setMode}
         onComputePlan={handleComputePlan}
         onClearAll={handleClearDeliveries}
       />

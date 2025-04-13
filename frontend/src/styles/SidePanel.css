@@ -1,0 +1,56 @@
+.side-panel {
+  position: static;
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.mode-buttons,
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+/* Common button styles */
+.mode-button,
+.plan-button,
+.clear-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f0f0f0;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+/* Hover states */
+.mode-button:hover,
+.plan-button:hover,
+.clear-button:hover {
+  background: #e8e8e8;
+}
+
+/* Active states */
+.mode-button.active,
+.plan-button.active {
+  background: #1890ff;
+  color: white;
+}
+
+.mode-button.active:hover,
+.plan-button.active:hover {
+  background: #40a9ff;
+}
+
+/* Button icons */
+.mode-button span,
+.plan-button span,
+.clear-button span {
+  display: inline-flex;
+  align-items: center;
+} 
