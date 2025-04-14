@@ -17,8 +17,8 @@
   transform: translate(-50%, -50%);
   background: white;
   padding: 24px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   z-index: 1001;
   width: 320px;
   max-width: 90vw;
@@ -67,21 +67,103 @@
   margin-bottom: 0;
 }
 
-.time-input {
+.time-picker-container {
+  position: relative;
   width: 100%;
-  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.time-picker-container:hover {
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+}
+
+.time-picker-container:hover .time-picker {
+  border-color: #40a9ff;
+}
+
+.time-picker-container:hover .time-picker-icon {
+  color: #1890ff;
+}
+
+.time-picker {
+  width: 100%;
+  padding: 10px 40px 10px 12px;
   border: 1px solid #d9d9d9;
   border-radius: 6px;
   font-size: 14px;
   color: #262626;
   transition: all 0.3s;
   box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: white;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
 }
 
-.time-input:focus {
+/* Hide native browser clock icon */
+.time-picker::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  width: 40px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+  z-index: 0;
+}
+
+.time-picker::-webkit-datetime-edit {
+  color: #262626;
+  font-size: 14px;
+}
+
+.time-picker:focus {
   border-color: #40a9ff;
   box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
   outline: none;
+}
+
+.time-picker-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8c8c8c;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 2;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.time-picker-icon:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #1890ff;
+}
+
+.time-picker-icon:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.time-error-message {
+  color: #ff4d4f;
+  font-size: 12px;
+  margin-top: -10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.time-error-message::before {
+  content: "⚠️";
 }
 
 .button-group {
@@ -139,6 +221,11 @@
 
 .confirm-button:hover {
   background: #40a9ff;
+}
+
+.confirm-button:disabled {
+  background: #d9d9d9;
+  cursor: not-allowed;
 }
 
 @keyframes fadeIn {
