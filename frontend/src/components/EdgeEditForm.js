@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../styles/EdgeEditForm.css";
 
 const EdgeEditForm = ({ edge, onSubmit, onCancel }) => {
   const [weight, setWeight] = useState(edge.weight.toFixed(2));
@@ -8,7 +9,7 @@ const EdgeEditForm = ({ edge, onSubmit, onCancel }) => {
     e.preventDefault();
     const parsed = parseFloat(weight);
     if (isNaN(parsed) || parsed <= 0) {
-      alert("请输入有效的耗时数字");
+      alert("Please enter a valid time it takes");
       return;
     }
     onSubmit({ from: edge.from, to: edge.to, weight: parsed, blocked });
@@ -17,13 +18,13 @@ const EdgeEditForm = ({ edge, onSubmit, onCancel }) => {
   return (
     <div style={styles.overlay}>
       <form onSubmit={handleSubmit} style={styles.form}>
-        <h3>编辑边</h3>
+        <h3>Edit Edge</h3>
         <p>
           {JSON.stringify(edge.from)} → {JSON.stringify(edge.to)}
         </p>
 
         <label>
-          耗时（分钟）:
+          Time it takes（minute）:
           <input
             type="number"
             step="0.01"
@@ -38,12 +39,12 @@ const EdgeEditForm = ({ edge, onSubmit, onCancel }) => {
             checked={blocked}
             onChange={(e) => setBlocked(e.target.checked)}
           />
-          封路
+          Road Blocked
         </label>
 
         <div style={styles.buttons}>
-          <button type="submit">确认</button>
-          <button type="button" onClick={onCancel}>取消</button>
+          <button type="submit">Submit</button>
+          <button type="button" onClick={onCancel}>Cancel</button>
         </div>
       </form>
     </div>

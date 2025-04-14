@@ -34,11 +34,11 @@ const DeliveryForm = ({ x, y, onSubmit, onDelete, onCancel }) => {
       <div className="add-node-modal-backdrop" onClick={onCancel}></div>
       <div className="add-node-modal">
         <div className="add-node-header">
-          <h3 className="add-node-title">📦 添加 / 编辑送货节点 <span className="location-display">({x}, {y})</span></h3>
+          <h3 className="add-node-title">📦 Add / Edit Delivery Nodes <span className="location-display">({x}, {y})</span></h3>
         </div>
         <div className="add-node-form">
           <div className="time-input-group">
-            <div className="time-input-label">最早到达时间:</div>
+            <div className="time-input-label">Earliest Arriving Time:</div>
             <div className="time-picker-container" onClick={() => openTimePicker(earliestRef)}>
               <input 
                 ref={earliestRef}
@@ -61,7 +61,7 @@ const DeliveryForm = ({ x, y, onSubmit, onDelete, onCancel }) => {
             </div>
           </div>
           <div className="time-input-group">
-            <div className="time-input-label">最晚到达时间:</div>
+            <div className="time-input-label">Latest Arriving Time:</div>
             <div className="time-picker-container" onClick={() => openTimePicker(latestRef)}>
               <input 
                 ref={latestRef}
@@ -84,7 +84,7 @@ const DeliveryForm = ({ x, y, onSubmit, onDelete, onCancel }) => {
             </div>
           </div>
           {!validateTimeRange() && (
-            <div className="time-error-message">最早到达时间不能晚于最晚到达时间</div>
+            <div className="time-error-message">Earliest Arriving Time cannot be later than Latest Arriving Time</div>
           )}
           <div className="button-group">
             <button 
@@ -92,10 +92,10 @@ const DeliveryForm = ({ x, y, onSubmit, onDelete, onCancel }) => {
               onClick={handleSubmit}
               disabled={!validateTimeRange()}
             >
-              确定
+              Submit
             </button>
-            <button className="cancel-button" onClick={onCancel}>取消</button>
-            <button className="delete-button" onClick={handleDelete}>删除</button>
+            <button className="cancel-button" onClick={onCancel}>Cancel</button>
+            <button className="delete-button" onClick={handleDelete}>Delete</button>
           </div>
         </div>
       </div>

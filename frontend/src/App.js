@@ -44,12 +44,12 @@ const App = () => {
   const handleAddDelivery = async (data) => {
     try {
       await axios.post("http://localhost:8000/add-delivery", data);
-      alert("送货点添加成功！");
+      alert("Delivery stop added successfully!");
       setShowForm(false);
       loadMap();
     } catch (err) {
       console.error(err);
-      alert("添加失败");
+      alert("Add delivery stop failed!");
     }
   };
 
@@ -73,12 +73,12 @@ const App = () => {
   const handleDeleteDelivery = async (location) => {
     try {
       await axios.post("http://localhost:8000/remove-delivery", { location });
-      alert("送货点已删除");
+      alert("Delivery stop deleted");
       setShowForm(false);
       loadMap();
     } catch (err) {
       console.error(err);
-      alert("删除失败");
+      alert("Delete delivery stop failed");
     }
   };
 
@@ -86,13 +86,13 @@ const App = () => {
   const handleClearDeliveries = async () => {
     try {
       await axios.post("http://localhost:8000/clear-deliveries");
-      alert("已清空所有送货点");
+      alert("All delivery stops cleared");
       setPathResult(null); // 清除路径
       setDeliveryOrder([]); // 清除送货顺序
       loadMap();
     } catch (err) {
       console.error(err);
-      alert("清空失败");
+      alert("Clear all delivery stops failed");
     }
   };
 
@@ -109,7 +109,7 @@ const App = () => {
       setDeliveryOrder(deliverySequence);
 
       if (!baseResult || baseResult.status !== "success") {
-        alert("❌ 后端未找到可行路径！");
+        alert("❌ Backend failed to find a feasible path!");
         return;
       }
 
@@ -117,7 +117,7 @@ const App = () => {
       const realPath = await fetchFullPath(sequence);
 
       if (!realPath || realPath.length === 0) {
-        alert("❌ 无法构造完整路径！");
+        alert("❌ Cannot construct a complete path!");
         return;
       }
 
@@ -130,8 +130,8 @@ const App = () => {
       setShowDeliveryTimeModal(true);
 
     } catch (err) {
-      console.error("路径规划失败：", err);
-      alert("路径规划失败！");
+      console.error("Path planning failed:", err);
+      alert("Path planning failed!");
     }
   };
 
@@ -153,7 +153,7 @@ const App = () => {
 
         const pathSegment = res.data?.path;
         if (!Array.isArray(pathSegment) || pathSegment.length === 0) {
-          console.warn("⚠️ 无法获取路径段：", from, "→", to);
+          console.warn("⚠️ Cannot obtain path segment:", from, "→", to);
           continue;
         }
 
@@ -163,7 +163,7 @@ const App = () => {
           fullPath.push(...pathSegment.slice(1)); // 避免重复
         }
       } catch (err) {
-        console.error("路径段请求失败：", from, to, err);
+        console.error("Path segment request failed:", from, to, err);
       }
     }
 
