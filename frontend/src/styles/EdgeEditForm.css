@@ -1,4 +1,4 @@
-.edit-modal-backdrop {
+.edge-modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
@@ -10,7 +10,149 @@
   animation: fadeIn 0.2s ease-out;
 }
 
-.edit-model-container
-{
+.edge-modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   z-index: 1001;
+  width: 320px;
+  max-width: 90vw;
+  box-sizing: border-box;
+  animation: slideIn 0.3s ease-out;
+}
+
+.edge-modal-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.edge-modal-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #262626;
+  margin: 0;
+}
+
+.edge-info {
+  color: #1890ff;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.edge-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-label {
+  font-size: 14px;
+  color: #595959;
+}
+
+.time-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #262626;
+  transition: all 0.3s;
+  box-sizing: border-box;
+  background: white;
+}
+
+.time-input:focus {
+  border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  outline: none;
+}
+
+.time-input:hover {
+  border-color: #40a9ff;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: -4px;
+}
+
+.checkbox-input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.checkbox-label {
+  font-size: 14px;
+  color: #595959;
+  cursor: pointer;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.confirm-button {
+  padding: 8px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: #1890ff;
+  color: white;
+}
+
+.confirm-button:hover {
+  background: #40a9ff;
+}
+
+.cancel-button {
+  padding: 8px 24px;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  color: #595959;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.cancel-button:hover {
+  color: #40a9ff;
+  border-color: #40a9ff;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
 }

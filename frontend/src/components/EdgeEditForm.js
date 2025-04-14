@@ -17,66 +17,52 @@ const EdgeEditForm = ({edge, onSubmit, onCancel}) => {
 
     return (
         <>
-            <div className="edit-modal-backdrop" onClick={onCancel}></div>
-            <div style={styles.overlay}>
-                <form className="edit-model-container" onSubmit={handleSubmit} style={styles.form}>
-                <h3>Edit Edge</h3>
-                <p>
-                    {JSON.stringify(edge.from)} → {JSON.stringify(edge.to)}
-                </p>
-
-                <label>
-                    Time it takes（minute）:
-                    <input
-                        type="number"
-                        step="0.01"
-                        value={weight}
-                        onChange={(e) => setWeight(e.target.value)}
-                    />
-                </label>
-
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={blocked}
-                        onChange={(e) => setBlocked(e.target.checked)}
-                    />
-                    Road Blocked
-                </label>
-
-                <div style={styles.buttons}>
-                    <button type="submit">Submit</button>
-                    <button type="button" onClick={onCancel}>Cancel</button>
+            <div className="edge-modal-backdrop" onClick={onCancel}></div>
+            <div className="edge-modal-container">
+                <div className="edge-modal-header">
+                    <h3 className="edge-modal-title">➼ Edit Edge</h3>
                 </div>
-            </form>
-            </div>
+                <div className="edge-form">
+                    <div className="edge-info">
+                        [{edge.from[0]},{edge.from[1]}] → [{edge.to[0]},{edge.to[1]}]
+                    </div>
+                    
+                    <div className="input-group">
+                        <div className="input-label">Time it takes (minutes):</div>
+                        <input
+                            type="number"
+                            step="0.01"
+                            value={weight}
+                            onChange={(e) => setWeight(e.target.value)}
+                            className="time-input"
+                        />
+                    </div>
 
+                    <div className="checkbox-group">
+                        <input
+                            type="checkbox"
+                            checked={blocked}
+                            onChange={(e) => setBlocked(e.target.checked)}
+                            className="checkbox-input"
+                            id="blocked"
+                        />
+                        <label htmlFor="blocked" className="checkbox-label">
+                            Road Blocked
+                        </label>
+                    </div>
+
+                    <div className="button-group">
+                        <button type="button" className="confirm-button" onClick={handleSubmit}>
+                            Submit
+                        </button>
+                        <button type="button" className="cancel-button" onClick={onCancel}>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
         </>
     );
-};
-
-const styles = {
-    overlay: {
-        position: "fixed",
-        top: 0, left: 0, right: 0, bottom: 0,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        zIndex: 1001
-    },
-    form: {
-        backgroundColor: "#fff",
-        padding: 20,
-        borderRadius: 8,
-        display: "flex",
-        flexDirection: "column",
-        gap: 10,
-        width: "300px"
-    },
-    buttons: {
-        display: "flex",
-        justifyContent: "space-between"
-    }
 };
 
 export default EdgeEditForm;
