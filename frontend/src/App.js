@@ -5,6 +5,7 @@ import EdgeEditForm from "./components/EdgeEditForm";
 import DeliveryTimeModal from "./components/DeliveryTimeModal";
 import axios from "axios";
 import SidePanel from "./components/SidePanel";
+import AboutModal from "./components/AboutModal";
 import "./styles/App.css";
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
   const [pathResult, setPathResult] = useState(null);
   const [deliveryOrder, setDeliveryOrder] = useState([]);
   const [showDeliveryTimeModal, setShowDeliveryTimeModal] = useState(false);
+  const [showAboutModal, setShowAboutModal] = useState(false);
   const [mode, setMode] = useState('delivery'); // 'delivery' or 'edge'
   const start = [0, 0];
 
@@ -176,8 +178,10 @@ const App = () => {
         <h1 className="app-title">
           <span className="app-title-emoji">🚚</span>
           Intelligent Delivery Map System
+           <button className="app-title-emoji2" onClick={() => {setShowAboutModal(true)}}>❓</button>
         </h1>
       </header>
+
 
       <main className="app-content">
         <div className="graph-container">
@@ -236,6 +240,14 @@ const App = () => {
           onClose={() => setShowDeliveryTimeModal(false)}
         />
       )}
+
+      {showAboutModal && (
+        <AboutModal
+          onClose={() => setShowAboutModal(false)}
+        />
+      )}
+
+
     </div>
   );
 };
