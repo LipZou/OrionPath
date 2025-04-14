@@ -7,6 +7,7 @@ from delivery_manager import DeliveryManager
 from dijkstra import compute_distance_matrix
 from planner import find_best_valid_path
 import networkx as nx
+import time  # ✅ 加上这一行
 
 # 初始化 FastAPI 应用
 app = FastAPI()
@@ -137,10 +138,17 @@ def compute_plan(start: Tuple[int, int] = (0, 0)):
     for (src, dst), dist in matrix.items():
         print(f"  {src} → {dst} = {dist:.2f}")
 
+    # ✅ 开始计时
+    start_time = time.time()
+
     result = find_best_valid_path(start, deliveries, matrix)
+
+    # ✅ 结束计时
+    elapsed = time.time() - start_time
 
     if not result:
         print("❌ 没有可行路径！")
+        print(f"🕒 耗时：{elapsed:.2f} 秒")
         return {"status": "failed", "message": "No valid path found"}
 
     print("\n✅ 可行路径：")
@@ -148,9 +156,9 @@ def compute_plan(start: Tuple[int, int] = (0, 0)):
         time_str = d.format_minutes(result["arrival_times"][i])
         print(f"  {i+1}. {d.location} 到达时间 = {time_str}")
     print(f"🕒 总耗时：{result['total_time']} 分钟")
+    print(f"⏱️ 规划耗时（秒）：{elapsed:.6f}")
     print("=====================================\n")
 
-    # ✅ 返回结构统一格式（包含序列 + 到达时间）
     return {
         "status": "success",
         "sequence": [d.location for d in result["sequence"]],
@@ -158,6 +166,6 @@ def compute_plan(start: Tuple[int, int] = (0, 0)):
             d.format_minutes(result["arrival_times"][i])
             for i, d in enumerate(result["sequence"])
         ],
-        "arrival_minutes": result["arrival_times"],  # ⚠️ 保留原始分钟数供前端 fetchFullPath 用
+        "arrival_minutes": result["arrival_times"],
         "total_time": result["total_time"]
     }

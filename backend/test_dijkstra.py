@@ -18,7 +18,7 @@ def test_visual_distance_matrix():
     matrix = compute_distance_matrix(gmap, key_points)
 
     # 打印矩阵
-    print("关键点之间的最短路径时间矩阵：")
+    print("Time matrix of key locations：")
     for (src, dst), time in matrix.items():
         print(f"{src} → {dst} = {time}")
 
