@@ -29,7 +29,7 @@ const SidePanel = ({ onComputePlan, onClearAll, mode, setMode, setShowAboutModal
           <span role="img" aria-label="wastebasket">🗑️</span>
           Clear Delivery Stops
         </button>
-        <button className="app-title-emoji2" onClick={() => {setShowAboutModal(true)}}>❓</button>
+        <button className="about-button" onClick={() => {setShowAboutModal(true)}}>❓</button>
       </div>
     </nav>
   );

@@ -16,7 +16,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background: white;
-  padding: 24px;
+  padding: 24px 24px 16px 24px;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   z-index: 1001;
@@ -24,6 +24,21 @@
   max-width: 90vw;
   box-sizing: border-box;
   animation: slideIn 0.3s ease-out;
+}
+
+.about-modal .welcome-text {
+  margin: 12px;
+ text-align: center;
+}
+
+.about-modal .about-text {
+  margin: 5px;
+ align-items: center;
+}
+
+.about-modal .enjoy-text {
+  margin: 10px;
+ text-align: center;
 }
 
 .about-header {
