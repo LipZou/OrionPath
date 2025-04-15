@@ -10,6 +10,7 @@ import "./styles/App.css";
 import CustomAlert from "./components/CustomAlert";
 
 
+
 const App = () => {
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
@@ -38,7 +39,7 @@ const App = () => {
       setEdges(resEdges.data);
       setDeliveries(resDeliveries.data.map((d) => d.location));
     } catch (err) {
-      console.error("地图加载失败：", err);
+      console.error("Failed to load the map:", err);
     }
   };
 

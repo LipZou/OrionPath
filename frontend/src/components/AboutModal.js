@@ -12,7 +12,7 @@ const AboutModal = ({onClose}) => {
                     <button className="modal-close-button" onClick={onClose}>×</button>
                 </div>
                 <p>
-                    Welcome to our Intelligent Delivery Map System! This application was developed to optimize delivery routes with
+                    Welcome! This application was developed to optimize delivery routes with
                     customized time windows according to the needs of delivery drivers.
 
                 </p>
