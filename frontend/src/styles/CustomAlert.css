@@ -1,0 +1,48 @@
+
+.custom-alert {
+  z-index: 2000;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(to right, #e6f7ff, #e6ffed);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  width: 500px;
+  max-width: 90vw;
+  box-sizing: border-box;
+  animation: slideIn 0.3s ease-out;
+}
+
+.custom-alert-body {
+  margin-bottom: 16px;
+}
+
+.custom-alert-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.OK-button {
+   padding: 8px 16px;
+  background: #1890ff;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+  min-width: 72px;
+  text-align: center;
+}
+
+
+.modal-footer {
+  justify-content: flex-end; /* If you’re using Flexbox in Bootstrap 5 */
+}
+
+
+
+
+

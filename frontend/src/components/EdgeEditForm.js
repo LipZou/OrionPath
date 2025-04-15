@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import "../styles/EdgeEditForm.css";
 
-const EdgeEditForm = ({edge, onSubmit, onCancel}) => {
+const EdgeEditForm = ({edge, onSubmit, onCancel, showAlert}) => {
     const [weight, setWeight] = useState(edge.weight.toFixed(2));
     const [blocked, setBlocked] = useState(edge.blocked);
 
@@ -9,7 +9,7 @@ const EdgeEditForm = ({edge, onSubmit, onCancel}) => {
         e.preventDefault();
         const parsed = parseFloat(weight);
         if (isNaN(parsed) || parsed <= 0) {
-            alert("Please enter a valid time it takes");
+            showAlert("Please enter a valid time");
             return;
         }
         onSubmit({from: edge.from, to: edge.to, weight: parsed, blocked});

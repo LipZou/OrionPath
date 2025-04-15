@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/SidePanel.css';
 
-const SidePanel = ({ onComputePlan, onClearAll, mode, setMode }) => {
+const SidePanel = ({ onComputePlan, onClearAll, mode, setMode, setShowAboutModal }) => {
   return (
     <nav className="side-panel">
       <div className="mode-buttons">
@@ -29,6 +29,7 @@ const SidePanel = ({ onComputePlan, onClearAll, mode, setMode }) => {
           <span role="img" aria-label="wastebasket">🗑️</span>
           Clear Delivery Stops
         </button>
+        <button className="app-title-emoji2" onClick={() => {setShowAboutModal(true)}}>❓</button>
       </div>
     </nav>
   );

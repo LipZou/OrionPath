@@ -7,6 +7,8 @@ import axios from "axios";
 import SidePanel from "./components/SidePanel";
 import AboutModal from "./components/AboutModal";
 import "./styles/App.css";
+import CustomAlert from "./components/CustomAlert";
+
 
 const App = () => {
   const [nodes, setNodes] = useState([]);
@@ -19,6 +21,8 @@ const App = () => {
   const [deliveryOrder, setDeliveryOrder] = useState([]);
   const [showDeliveryTimeModal, setShowDeliveryTimeModal] = useState(false);
   const [showAboutModal, setShowAboutModal] = useState(false);
+  const [showCustomAlert, setShowCustomAlert] = useState(false);
+  const [customAlertText, setCustomAlertText] = useState("");
   const [mode, setMode] = useState('delivery'); // 'delivery' or 'edge'
   const start = [0, 0];
 
@@ -42,18 +46,26 @@ const App = () => {
     loadMap();
   }, []);
 
+  function ShowCustomAlertModal(text)
+  {
+    setCustomAlertText(text);
+    setShowCustomAlert(true);
+  }
+
   // 📦 添加送货点
   const handleAddDelivery = async (data) => {
     try {
       await axios.post("http://localhost:8000/add-delivery", data);
-      alert("Delivery stop added successfully!");
+      ShowCustomAlertModal("Delivery stop added successfully!");
       setShowForm(false);
       loadMap();
     } catch (err) {
       console.error(err);
-      alert("Add delivery stop failed!");
+      ShowCustomAlertModal("Add delivery stop failed!");
     }
   };
+
+
 
   // 🛣️ 修改边信息（封路/耗时）
   const handleEdgeSubmit = async ({ from, to, weight, blocked }) => {
@@ -67,7 +79,7 @@ const App = () => {
       loadMap();
     } catch (err) {
       console.error(err);
-      alert("修改边失败");
+      ShowCustomAlertModal("修改边失败");
     }
   };
 
@@ -75,12 +87,12 @@ const App = () => {
   const handleDeleteDelivery = async (location) => {
     try {
       await axios.post("http://localhost:8000/remove-delivery", { location });
-      alert("Delivery stop deleted");
+      ShowCustomAlertModal("Delivery stop deleted");
       setShowForm(false);
       loadMap();
     } catch (err) {
       console.error(err);
-      alert("Delete delivery stop failed");
+      ShowCustomAlertModal("Delete delivery stop failed");
     }
   };
 
@@ -88,13 +100,13 @@ const App = () => {
   const handleClearDeliveries = async () => {
     try {
       await axios.post("http://localhost:8000/clear-deliveries");
-      alert("All delivery stops cleared");
+      ShowCustomAlertModal("All delivery stops cleared");
       setPathResult(null); // 清除路径
       setDeliveryOrder([]); // 清除送货顺序
       loadMap();
     } catch (err) {
       console.error(err);
-      alert("Clear all delivery stops failed");
+      ShowCustomAlertModal("Clear all delivery stops failed");
     }
   };
 
@@ -111,7 +123,7 @@ const App = () => {
       setDeliveryOrder(deliverySequence);
 
       if (!baseResult || baseResult.status !== "success") {
-        alert("❌ Backend failed to find a feasible path!");
+        ShowCustomAlertModal("❌ Backend failed to find a feasible path!");
         return;
       }
 
@@ -119,7 +131,7 @@ const App = () => {
       const realPath = await fetchFullPath(sequence);
 
       if (!realPath || realPath.length === 0) {
-        alert("❌ Cannot construct a complete path!");
+        ShowCustomAlertModal("❌ Cannot construct a complete path!");
         return;
       }
 
@@ -133,7 +145,7 @@ const App = () => {
 
     } catch (err) {
       console.error("Path planning failed:", err);
-      alert("Path planning failed!");
+      ShowCustomAlertModal("Path planning failed!");
     }
   };
 
@@ -178,7 +190,6 @@ const App = () => {
         <h1 className="app-title">
           <span className="app-title-emoji">🚚</span>
           Intelligent Delivery Map System
-           <button className="app-title-emoji2" onClick={() => {setShowAboutModal(true)}}>❓</button>
         </h1>
       </header>
 
@@ -212,6 +223,7 @@ const App = () => {
             setMode={setMode}
             onComputePlan={handleComputePlan}
             onClearAll={handleClearDeliveries}
+            setShowAboutModal={setShowAboutModal}
           />
         </div>
       </main>
@@ -231,6 +243,7 @@ const App = () => {
           edge={selectedEdge}
           onSubmit={handleEdgeSubmit}
           onCancel={() => setSelectedEdge(null)}
+          showAlert={ShowCustomAlertModal}
         />
       )}
 
@@ -245,6 +258,14 @@ const App = () => {
         <AboutModal
           onClose={() => setShowAboutModal(false)}
         />
+      )}
+
+      {showCustomAlert && (
+          <CustomAlert
+            onHide={() => setShowCustomAlert(false)}
+            show={true}
+            text={customAlertText}
+          />
       )}
 
 
