@@ -123,6 +123,15 @@ class GraphMap:
             })
         return result
 
+    def get_effective_graph(self) -> nx.DiGraph:
+        """
+        返回一个不包含被封路边的图副本，供路径规划等算法使用。
+        原图仍保留所有边（用于可视化）。
+        """
+        g = self.graph.copy()
+        g.remove_edges_from(self.blocked_edges)
+        return g
+
     def visualize(self,
                   deliveries: List['Delivery'],
                   start: Tuple[int, int],

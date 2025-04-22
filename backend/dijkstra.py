@@ -14,14 +14,11 @@ def compute_distance_matrix(graph_map: GraphMap, key_points: List[Tuple[int, int
     """
     distance_matrix = {}
 
+    graph = graph_map.get_effective_graph()
     for source in key_points:
-        # 使用 Dijkstra 从 source 出发
         length_dict = nx.single_source_dijkstra_path_length(
-            graph_map.graph,
-            source=source,
-            weight="weight"
+            graph, source=source, weight="weight"
         )
-
         for target in key_points:
             if source == target:
                 continue

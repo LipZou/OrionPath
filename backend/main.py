@@ -73,8 +73,10 @@ def get_shortest_path(from_: str = Query(..., alias="from"), to: str = Query(...
         to_node = tuple(map(int, to.split(",")))
 
         # ✅ 使用 networkx 提供的最短路径方法
-        path = nx.dijkstra_path(gmap.graph, source=from_node, target=to_node, weight="weight")
-        total_time = nx.dijkstra_path_length(gmap.graph, source=from_node, target=to_node, weight="weight")
+        effective_graph = gmap.get_effective_graph()
+        path = nx.dijkstra_path(effective_graph, source=from_node, target=to_node, weight="weight")
+        total_time = nx.dijkstra_path_length(effective_graph, source=from_node, target=to_node, weight="weight")
+
 
         return {
             "path": path,
